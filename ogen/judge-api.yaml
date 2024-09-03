@@ -1,0 +1,157 @@
+openapi: 3.1.0
+info:
+  version: "1.0"
+  title: judge-api
+  summary: Online Judge API
+  description: |-
+    This API is a RESTful API that provides a set of endpoints for submitting and
+    retrieving problems, submissions, and judgements to popular online judge
+    systems.
+servers:
+  - url: "http://localhost:8080"
+    description: Local
+paths:
+  "/codeforces/problems/{contest_id}/{index}":
+    get:
+      summary: Get Codeforces Problem
+      operationId: get-codeforces-problem
+      parameters:
+        - name: contest_id
+          in: path
+          description: Contest ID
+          required: true
+          schema:
+            type: integer
+        - name: index
+          in: path
+          description: "Problem Index. Usually, a letter or letter with digit(s) indicating the problem index in a contest."
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CodeforcesProblem"
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      servers:
+        - url: "http://localhost:8080"
+          description: Local
+components:
+  schemas:
+    CodeforcesProblem:
+      type: object
+      title: Problem
+      properties:
+        contest_id:
+          type: number
+        index:
+          type: string
+        name:
+          type: string
+        time_limit:
+          type: integer
+          minimum: 0
+        memory_limit:
+          type: integer
+          minimum: 0
+        tags:
+          type: array
+          items:
+            type: string
+        languages:
+          type: array
+          items:
+            $ref: "#/components/schemas/CodeforcesLanguage"
+        legend:
+          type: string
+        input:
+          type: string
+        output:
+          type: string
+        interaction:
+          type: string
+        scoring:
+          type: string
+        notes:
+          type: string
+        examples:
+          type: array
+          items:
+            $ref: "#/components/schemas/CodeforcesTestcase"
+      required:
+        - contest_id
+        - index
+        - name
+        - time_limit
+        - memory_limit
+        - tags
+        - languages
+        - legend
+        - input
+        - output
+        - notes
+        - examples
+      examples:
+        - contest_id: 2008
+          index: A
+          name: Sakurako's Exam
+          time_limit: 1000
+          memory_limit: 256
+          tags:
+            - brute force
+            - constructive algorithms
+          languages:
+            - id: 43
+              name: GNU GCC C11 5.1.0
+          legend: "<p>Today, Sakurako has a math exam. The teacher gave the array, consisting of $$$a$$$ ones and $$$b$$$ twos.</p>"
+          input: string
+          output: string
+          scoring: string
+          notes: string
+          examples:
+            - input: string
+              output: string
+    CodeforcesLanguage:
+      type: object
+      title: CodeforcesLanguage
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+      required:
+        - id
+        - name
+    CodeforcesTestcase:
+      type: object
+      title: CodeforcesTestcase
+      properties:
+        input:
+          type: string
+        output:
+          type: string
+      required:
+        - input
+        - output
+      examples:
+        - input: string
+          output: string
+    Error:
+      type: object
+      title: Error
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
