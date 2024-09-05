@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "undetected-proxy"
+version = "0.1.0"
+description = ""
+authors = ["Tommy Li <dev@stdx.space>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+nodriver = "^0.36"
+aiohttp = "^3.10.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
